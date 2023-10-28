@@ -1,0 +1,104 @@
+ #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Define a structure for student information
+struct Student {
+    int studentNumber;
+    char name[50];
+    int age;
+    struct Student* next;
+};
+
+typedef struct Student Student;
+
+// Function to add odd numbers to the beginning and even numbers to the end of the list
+Student* addNumbersToList(Student* head) {
+    int num;
+    Student* oddHead = NULL;
+    Student* oddTail = NULL;
+    Student* evenHead = NULL;
+    Student* evenTail = NULL;
+
+    printf("Enter numbers (enter -1 to stop):\n");
+
+    while (1) {
+        scanf("%d", &num);
+        if (num == -1) {
+            break;
+        }
+
+        Student* newStudent = (Student*)malloc(sizeof(Student));
+        newStudent->studentNumber = num;
+        newStudent->next = NULL;
+
+        if (num % 2 == 1) {
+            if (oddHead == NULL) {
+                oddHead = newStudent;
+                oddTail = newStudent;
+            } else {
+                oddTail->next = newStudent;
+                oddTail = newStudent;
+            }
+        } else {
+            if (evenHead == NULL) {
+                evenHead = newStudent;
+                evenTail = newStudent;
+            } else {
+                evenTail->next = newStudent;
+                evenTail = newStudent;
+            }
+        }
+    }
+
+    // Connect odd list to even list
+    if (oddTail != NULL) {
+        oddTail->next = evenHead;
+        return oddHead;
+    } else {
+        return evenHead;
+    }
+}
+
+// Function to add random numbers to the list
+Student* addRandomNumbersToList(Student* head, int count) {
+    for (int i = 0; i < count; i++) {
+        int randomNum = rand() % 100;  // Generate a random number between 0 and 99
+        Student* newStudent = (Student*)malloc(sizeof(Student));
+        newStudent->studentNumber = randomNum;
+        newStudent->next = head;
+        head = newStudent;
+    }
+    return head;
+}
+
+// Function to print the list
+void printList(Student* head) {
+    Student* current = head;
+    while (current != NULL) {
+        printf("%d->", current->studentNumber);
+        current = current->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    srand(time(NULL));  // Initialize the random number generator
+
+    Student* head = NULL;
+    head = addNumbersToList(head);
+    printf("List after adding odd and even numbers: ");
+    printList(head);
+
+    head = addRandomNumbersToList(head, 100);
+    printf("List after adding random numbers: ");
+    printList(head);
+
+    // Sort the list in descending order (you can implement a sorting algorithm here)
+
+    // Print the sorted list
+
+    // Implement the remaining functions
+
+    return 0;
+}
